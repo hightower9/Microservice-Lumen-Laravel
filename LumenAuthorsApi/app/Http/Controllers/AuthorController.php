@@ -35,11 +35,34 @@ class AuthorController extends Controller
      *      },
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation"
-     *       ),
+     *          description="Data Successful",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="data", type="object")
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="error", type="string", example="Unauthorized"),
+     *              @OA\Property(property="code", type="string", example=401)
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="error", type="string", example="Forbidden"),
+     *              @OA\Property(property="code", type="string", example=403)
+     *          )
+     *      ),
      *      @OA\Response(
      *          response=404,
-     *          description="Not Found"
+     *          description="Not Found",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="Not Found"),
+     *              @OA\Property(property="code", type="string", example=404)
+     *          )
      *      )
      * )
      */
@@ -66,40 +89,53 @@ class AuthorController extends Controller
      *             "Bearer": {}
      *         }
      *      },
-     *      @OA\Parameter(
-     *          name="name",
-     *          description="Author Name",
-     *          required=true,
-     *          in="query",
-     *          @OA\Schema(
-     *              type="string"
-     *          )
-     *      ),
-     *      @OA\Parameter(
-     *          name="gender",
-     *          description="Author Gender",
-     *          required=true,
-     *          in="query",
-     *          @OA\Schema(
-     *              type="string"
-     *          )
-     *      ),
-     *      @OA\Parameter(
-     *          name="country",
-     *          description="Author Country",
-     *          required=true,
-     *          in="query",
-     *          @OA\Schema(
-     *              type="string"
+     *      @OA\RequestBody(
+     *         required=true,
+     *         description="Pass author details",
+     *         @OA\JsonContent(
+     *                 required={"name", "gender","country"},
+     *                 @OA\Property (property= "name", type="string", description= "name"),
+     *                 @OA\Property (property = "gender", type = "string", description = "gender"),
+     *                 @OA\Property (property = "country", type = "string", description = "country")
+     *         )
+     *     ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Data Successful",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="data", type="object")
      *          )
      *      ),
      *      @OA\Response(
-     *          response=200,
-     *          description="Data Successfully Stored"
+     *          response=201,
+     *          description="Data Successfully Created",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="data", type="object")
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="error", type="string", example="Unauthorized"),
+     *              @OA\Property(property="code", type="string", example=401)
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="error", type="string", example="Forbidden"),
+     *              @OA\Property(property="code", type="string", example=403)
+     *          )
      *      ),
      *      @OA\Response(
      *          response=404,
      *          description="Not Found",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="Not Found"),
+     *              @OA\Property(property="code", type="string", example=404)
+     *          )
      *      )
      * )
      */
@@ -145,11 +181,34 @@ class AuthorController extends Controller
      *      ),
      *      @OA\Response(
      *          response=200,
-     *          description="Data Successful"
+     *          description="Data Successful",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="data", type="object")
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="error", type="string", example="Unauthorized"),
+     *              @OA\Property(property="code", type="string", example=401)
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="error", type="string", example="Forbidden"),
+     *              @OA\Property(property="code", type="string", example=403)
+     *          )
      *      ),
      *      @OA\Response(
      *          response=404,
      *          description="Not Found",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="Not Found"),
+     *              @OA\Property(property="code", type="string", example=404)
+     *          )
      *      )
      * )
      */
@@ -177,37 +236,17 @@ class AuthorController extends Controller
      *         }
      *      },
      *      @OA\RequestBody(
-     *         required=true,
      *         description="Pass user credentials",
      *         @OA\JsonContent(
-     *              required={"email","password"},
      *              @OA\Property(property="email", type="string", format="email", example="user1@mail.com"),
      *              @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
      *              @OA\Property(property="persistent", type="boolean", example="true"),
      *         ),
      *      ),
      *      @OA\Parameter(
-     *          name="name",
-     *          description="Author Name",
-     *          required=false,
-     *          in="query",
-     *          @OA\Schema(
-     *              type="string"
-     *          )
-     *      ),
-     *      @OA\Parameter(
-     *          name="gender",
-     *          description="Author Gender",
-     *          required=false,
-     *          in="query",
-     *          @OA\Schema(
-     *              type="string"
-     *          )
-     *      ),
-     *      @OA\Parameter(
-     *          name="country",
-     *          description="Author Country",
-     *          required=false,
+     *          name="id",
+     *          description="Author ID",
+     *          required=true,
      *          in="query",
      *          @OA\Schema(
      *              type="string"
@@ -215,13 +254,33 @@ class AuthorController extends Controller
      *      ),
      *      @OA\Response(
      *          response=200,
-     *          description="Data Successful"
+     *          description="Data Successful",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="data", type="object")
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="error", type="string", example="Unauthorized"),
+     *              @OA\Property(property="code", type="string", example=401)
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="error", type="string", example="Forbidden"),
+     *              @OA\Property(property="code", type="string", example=403)
+     *          )
      *      ),
      *      @OA\Response(
      *          response=404,
      *          description="Not Found",
      *          @OA\JsonContent(
-     *              @OA\Property(property="message", type="string", example="Sorry, wrong email address or password. Please try again")
+     *              @OA\Property(property="message", type="string", example="Not Found"),
+     *              @OA\Property(property="code", type="string", example=404)
      *          )
      *      )
      * )
@@ -264,7 +323,7 @@ class AuthorController extends Controller
      *      },
      *      @OA\Parameter(
      *          name="id",
-     *          description="author id",
+     *          description="Author ID",
      *          required=true,
      *          in="query",
      *          @OA\Schema(
@@ -273,19 +332,34 @@ class AuthorController extends Controller
      *      ),
      *      @OA\Response(
      *          response=200,
-     *          description="Data Successful"
+     *          description="Data Successful",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="data", type="object")
+     *          )
      *      ),
      *      @OA\Response(
      *          response=401,
-     *          description="Unauthenticated",
+     *          description="Unauthorized",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="error", type="string", example="Unauthorized"),
+     *              @OA\Property(property="code", type="string", example=401)
+     *          )
      *      ),
      *      @OA\Response(
      *          response=403,
-     *          description="Forbidden"
+     *          description="Forbidden",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="error", type="string", example="Forbidden"),
+     *              @OA\Property(property="code", type="string", example=403)
+     *          )
      *      ),
      *      @OA\Response(
      *          response=404,
      *          description="Not Found",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="Not Found"),
+     *              @OA\Property(property="code", type="string", example=404)
+     *          )
      *      )
      * )
      */
