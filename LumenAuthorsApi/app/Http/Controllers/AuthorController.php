@@ -37,7 +37,7 @@ class AuthorController extends Controller
      *          response=200,
      *          description="Data Successful",
      *          @OA\JsonContent(
-     *              @OA\Property(property="data", type="object")
+     *              @OA\Property(property="author", type="object", ref="#/components/schemas/Author")
      *          )
      *      ),
      *      @OA\Response(
@@ -93,17 +93,14 @@ class AuthorController extends Controller
      *         required=true,
      *         description="Pass author details",
      *         @OA\JsonContent(
-     *                 required={"name", "gender","country"},
-     *                 @OA\Property (property= "name", type="string", description= "name"),
-     *                 @OA\Property (property = "gender", type = "string", description = "gender"),
-     *                 @OA\Property (property = "country", type = "string", description = "country")
+     *                 @OA\Property(property="author", type="object", ref="#/components/schemas/Author"),
      *         )
      *     ),
      *      @OA\Response(
      *          response=200,
      *          description="Data Successful",
      *          @OA\JsonContent(
-     *              @OA\Property(property="data", type="object")
+     *              @OA\Property(property="author", type="object", ref="#/components/schemas/Author")
      *          )
      *      ),
      *      @OA\Response(
@@ -183,7 +180,7 @@ class AuthorController extends Controller
      *          response=200,
      *          description="Data Successful",
      *          @OA\JsonContent(
-     *              @OA\Property(property="data", type="object")
+     *              @OA\Property(property="author", type="object", ref="#/components/schemas/Author")
      *          )
      *      ),
      *      @OA\Response(
@@ -256,7 +253,7 @@ class AuthorController extends Controller
      *          response=200,
      *          description="Data Successful",
      *          @OA\JsonContent(
-     *              @OA\Property(property="data", type="object")
+     *              @OA\Property(property="author", type="object", ref="#/components/schemas/Author")
      *          )
      *      ),
      *      @OA\Response(
@@ -334,7 +331,7 @@ class AuthorController extends Controller
      *          response=200,
      *          description="Data Successful",
      *          @OA\JsonContent(
-     *              @OA\Property(property="data", type="object")
+     *              @OA\Property(property="author", type="object", ref="#/components/schemas/Author")
      *          )
      *      ),
      *      @OA\Response(
