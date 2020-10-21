@@ -149,6 +149,7 @@ class AuthorController extends Controller
         ];
 
         $this->validate($request, $rules);
+
         $author = Author::create($request->all());
 
         return $this->successResponse($author, Response::HTTP_CREATED);
