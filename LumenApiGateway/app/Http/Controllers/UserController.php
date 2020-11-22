@@ -114,6 +114,7 @@ class UserController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
+            'role' => 'required|max:255'
         ];
 
         $this->validate($request, $rules);
@@ -121,9 +122,15 @@ class UserController extends Controller
         $fields = $request->all();
         $fields['password'] = Hash::make($request->password);
 
-        $author = User::create($fields);
+        $user = User::create($fields);
 
-        return $this->validResponse($author, Response::HTTP_CREATED);
+        $user->assignRole($request->role);
+        // You can also assign multiple roles at once
+        // $user->assignRole('writer', 'admin');
+        // or as an array
+        // $user->assignRole(['writer', 'admin']);
+
+        return $this->validResponse($user, Response::HTTP_CREATED);
     }
 
      /**
@@ -162,10 +169,10 @@ class UserController extends Controller
      * Obtain and show one User
      * @return Illuminate\Http\Response
      */
-    public function show($author){
-        $author = User::findOrFail($author);
+    public function show($user){
+        $user = User::findOrFail($user);
 
-        return $this->validResponse($author);
+        return $this->validResponse($user);
     }
 
     /**
@@ -173,8 +180,8 @@ class UserController extends Controller
      *      path="/users/{id}",
      *      operationId="updateUser",
      *      tags={"Users"},
-     *      summary="Update existing author",
-     *      description="Returns updated author data",
+     *      summary="Update existing user",
+     *      description="Returns updated user data",
      *      security={
      *         {
      *             "Bearer": {}
@@ -235,27 +242,30 @@ class UserController extends Controller
      * Update an existing User
      * @return Illuminate\Http\Response
      */
-    public function update(Request $request, $author){
+    public function update(Request $request, $user){
         $rules = [
             'name' => 'max:255',
             'email' => 'email|unique:users,email,'. $user,
             'password' => 'min:6|confirmed',
+            'role' => 'max:255'
         ];
 
         $this->validate($request, $rules);
 
-        $author = User::findOrFail($author);
-        $author->fill($request->all());
+        $user = User::findOrFail($user);
+        $user->fill($request->all());
 
         if ($request->has('password')) {
             $user->password = Hash::make($request->password);
         }
 
-        if($author->isClean()){ //checks if nothing is changed
+        $user->syncRoles(['writer']);
+
+        if($user->isClean()){ //checks if nothing is changed
             return $this->errorResponse('Atleast one value must change', Response::HTTP_UNPROCESSABLE_ENTITY); //422
         }
-        $author->save();
-        return $this->validResponse($author);
+        $user->save();
+        return $this->validResponse($user);
     }
 
     /**
@@ -302,10 +312,11 @@ class UserController extends Controller
      * Remove an existing User
      * @return Illuminate\Http\Response
      */
-    public function destroy($author){
-        $author = User::findOrFail($author);
-        $author->delete();
-        return $this->validResponse($author);
+    public function destroy($user){
+        $user = User::findOrFail($user);
+        $user->delete();
+
+        return $this->validResponse($user);
     }
 
     /**

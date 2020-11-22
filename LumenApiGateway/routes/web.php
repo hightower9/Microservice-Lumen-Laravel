@@ -32,16 +32,6 @@ $router->group(['middleware' => 'client.credentials'], function() use ($router){
     $router->put('/books/{book}','BookController@update');
     $router->patch('/books/{book}','BookController@update');
     $router->delete('/books/{book}','BookController@destroy');
-
-    /**
-     * Routes for Users
-     */
-    $router->get('/users','UserController@index');
-    $router->post('/users','UserController@store');
-    $router->get('/users/{user}','UserController@show');
-    $router->put('/users/{user}','UserController@update');
-    $router->patch('/users/{user}','UserController@update');
-    $router->delete('/users/{user}','UserController@destroy');
 });
 
 /**
@@ -49,7 +39,40 @@ $router->group(['middleware' => 'client.credentials'], function() use ($router){
  */
 $router->group(['middleware' => 'auth:api'], function() use ($router){
     $router->get('/users/me','UserController@me');
+
+    /**
+     * Routes for Users
+     */
+    $router->get('/user','UserController@index');
+    $router->post('/user','UserController@store');
+    $router->get('/user/{user}',[
+                                    'middleware' => 'permission:Edit Author',
+                                    'use' => 'UserController@show'
+                                ]);
+    $router->put('/user/{user}','UserController@update');
+    $router->patch('/user/{user}','UserController@update');
+    $router->delete('/user/{user}','UserController@destroy');
+
+    /**
+     * Routes for Roles
+     */
+    $router->get('/roles','RoleController@index');
+    $router->post('/roles','RoleController@store');
+    $router->get('/roles/{id:[0-9]+}','RoleController@show');
+    $router->put('/roles/{id:[0-9]+}','RoleController@update');
+    $router->delete('/roles/{id:[0-9]+}','RoleController@destroy');
+
+    /**
+     * Routes for Permissions
+     */
+    $router->get('/permissions','PermissionController@index');
+    $router->post('/permissions','PermissionController@store');
+    $router->get('/permissions/{id:[0-9]+}','PermissionController@show');
+    $router->put('/permissions/{id:[0-9]+}','PermissionController@update');
+    $router->delete('/permissions/{id:[0-9]+}','PermissionController@destroy');
 });
+
+
 
 ///  localhost:8002/oauth/token  route for access token
 ///  grant_type  client_credentials

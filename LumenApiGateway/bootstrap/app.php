@@ -66,6 +66,7 @@ $app->singleton(
 */
 
 $app->configure('app');
+$app->configure('permission');
 
 /*
 |--------------------------------------------------------------------------
@@ -83,8 +84,10 @@ $app->configure('app');
 // ]);
 
 $app->routeMiddleware([
-    'auth' => App\Http\Middleware\Authenticate::class,
+    'auth'               => App\Http\Middleware\Authenticate::class,
     'client.credentials' => Laravel\Passport\Http\Middleware\CheckClientCredentials::class,
+    'permission'         => Spatie\Permission\Middlewares\PermissionMiddleware::class,
+    'role'               => Spatie\Permission\Middlewares\RoleMiddleware::class,
 ]);
 
 /*
@@ -104,6 +107,8 @@ $app->register(Laravel\Passport\PassportServiceProvider::class);
 $app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
+$app->alias('cache', \Illuminate\Cache\CacheManager::class);  // if you don't have this already
+$app->register(Spatie\Permission\PermissionServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
